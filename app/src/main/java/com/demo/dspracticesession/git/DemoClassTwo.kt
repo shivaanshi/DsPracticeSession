@@ -1,4 +1,4 @@
 package com.demo.dspracticesession.git
 
-class DemoClassFour {
+class DemoClassTwo {
 }
