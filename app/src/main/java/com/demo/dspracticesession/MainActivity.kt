@@ -9,13 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.demo.dspracticesession.ui.theme.DsPracticeSessionTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -29,6 +31,7 @@ class MainActivity : ComponentActivity() {
 
     private val _toastMessage = MutableSharedFlow<String>()
     private val toastMessage: SharedFlow<String> = _toastMessage
+    private var response = mutableStateOf("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
             DsPracticeSessionTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = response.value,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -47,6 +50,19 @@ class MainActivity : ComponentActivity() {
         incrementCounter()
         sendToastMessage("Counter updated")
         shareFlowVsStateFlow()
+        lifecycleScope.launch {MergeSortedArray.asyncWay()}
+        integrateAI()
+    }
+
+    private fun integrateAI() {
+        val chatGPTService = ChatGPTService()
+        chatGPTService.sendMessage("Hello ChatGPT!") { response ->
+            runOnUiThread {
+                if (response != null) {
+                    this.response.value = response
+                }
+            }
+        }
     }
 
     private fun incrementCounter() {

@@ -6,7 +6,7 @@ class ShortestDistance {
 
     fun shortestToChar(s: String, c: Char): IntArray {
         val arrayChar: CharArray = s.toCharArray()
-        val array: IntArray = IntArray(arrayChar.size)
+        val array = IntArray(arrayChar.size)
         var charCurrentIndex = -1
         arrayChar.forEachIndexed { index, charItem ->
             if(charItem == c) {
